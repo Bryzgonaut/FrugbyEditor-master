@@ -1,16 +1,13 @@
-Hockey Editor
+Frugby Editor
 
-A library for editing HockeyQuestionMark Memory.
-
-http://www.hockeyquestionmark.com/
-https://www.reddit.com/r/hockeyquestionmark/
+A library for editing Frugby Memory based on HockeyEditor
+https://github.com/HockeyQuestionMark/HockeyEditor
 
 Instructions:
-Build HockeyEditor .dll
+Build FrugbyEditor .dll
 Add to your project
 
 Always call MemoryEditor.Init() before using any library calls
 
-Contact: 
-samhaliburton@gmail.com
+
 
