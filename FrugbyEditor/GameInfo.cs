@@ -16,6 +16,7 @@
         const int SCOREBOARD_ADDRESS = 0x7233CC;
         const int LEFT_SCORE_OFFSET = 0x0;
         const int RIGHT_SCORE_OFFSET = 0x4;
+        const int LAST_TRY_OFFSET = 0x8;
         const int LEFT_TEAM_OFFSET = 0x20;
         const int RIGHT_TEAM_OFFSET = 0x24;
 
@@ -36,6 +37,14 @@
         public static HQMTeam RightTeam
         {
             get { return(HQMTeam) MemoryEditor.ReadInt(SCOREBOARD_ADDRESS + RIGHT_TEAM_OFFSET); }
+        }
+
+        /// <summary>
+        /// The Team that scored most recently
+        /// </summary>
+        public static HQMTeam LastTryTeam
+        {
+            get { return (HQMTeam)MemoryEditor.ReadInt(SCOREBOARD_ADDRESS + LAST_TRY_OFFSET); }
         }
 
         /// <summary>
