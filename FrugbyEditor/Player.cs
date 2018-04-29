@@ -11,7 +11,7 @@
         const int ROLE_OFFSET = 0xC;
         const int LOCKOUT_TIME_OFFSET = 0x10;
         const int PLAYER_NAME_OFFSET = 0x3C;
-        const int STICK_ANGLE_OFFSET = 0x54;
+        const int PLAYER_NUMBER_OFFSET = 0x7C;
         const int TURNING_OFFSET = 0x58;
         const int FORWARD_BACK_OFFSET = 0x60;
         const int STICK_X_ROTATION_OFFSET = 0x64;
@@ -22,13 +22,13 @@
         const int GOALS_OFFSET = 0x88;
         const int ASSISTS_OFFSET = 0x8C;
 
-        const int PLAYER_TRANSFORM_LIST_ADDRESS = 0x07D1C280;
-        const int PLAYER_TRANSFORM_SIZE = 0xBD8;
+        const int PLAYER_TRANSFORM_LIST_ADDRESS = 0x23B798;
+        const int PLAYER_TRANSFORM_SIZE = 0x2934;
 
         const int PLAYER_POSITION_OFFSET = 0x10;
         const int PLAYER_SIN_ROTATION_OFFSET = 0x28;
         const int PLAYER_COS_ROTATION_OFFSET = 0x30;
-        const int STICK_POSITION_OFFSET = 0xA0;
+        const int STICK_POSITION_OFFSET = 0xA0; //deprecated. will be replaced with hand position
 
         const int AUTOSTOP = 0x268DA;
 
@@ -96,10 +96,10 @@
         /// <summary>
         /// The angle of the player's stick. Ranges from -1 to 1 in increments of 0.25
         /// </summary>
-        public float StickAngle
+        public int JerseyNumber
         {
-            get { return MemoryEditor.ReadFloat(PLAYER_LIST_ADDRESS + m_Slot * PLAYER_STRUCT_SIZE + STICK_ANGLE_OFFSET); }
-            set { MemoryEditor.WriteFloat(value, PLAYER_LIST_ADDRESS + m_Slot * PLAYER_STRUCT_SIZE + STICK_ANGLE_OFFSET); }
+            get { return MemoryEditor.ReadInt(PLAYER_LIST_ADDRESS + m_Slot * PLAYER_STRUCT_SIZE + PLAYER_NUMBER_OFFSET); }
+            set { MemoryEditor.WriteInt(value, PLAYER_LIST_ADDRESS + m_Slot * PLAYER_STRUCT_SIZE + PLAYER_NUMBER_OFFSET); }
         }
 
         /// <summary>

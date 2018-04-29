@@ -5,7 +5,7 @@
     /// </summary>
     public static class Ball
     {
-        const int BALL_TRANSFORM_ADDRESS = 0x02333F6C;
+        const int BALL_TRANSFORM_ADDRESS = 0x1323F6C;
         const int BALL_POSITION_OFFSET = 0x0;
         const int BALL_VELOCITY_OFFSET = 0x4C;
         const int BALL_ROTATIONAL_VELOCITY_OFFSET = 0x64;
