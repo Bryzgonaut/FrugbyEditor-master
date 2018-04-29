@@ -30,6 +30,8 @@
         const int PLAYER_COS_ROTATION_OFFSET = 0x30;
         const int STICK_POSITION_OFFSET = 0xA0;
 
+        const int AUTOSTOP = 0x268DA;
+
         private int m_Slot;
 
         /// <summary>
@@ -209,6 +211,14 @@
         public FRUGVector StickPosition
         {
             get { return MemoryEditor.ReadFRUGVector(PLAYER_TRANSFORM_LIST_ADDRESS + ID * PLAYER_TRANSFORM_SIZE + STICK_POSITION_OFFSET); }
+        }
+
+        /// <summary>
+        /// Disable writing 0 to inputs when no key is pressed (required for bots)
+        /// </summary>
+        public bool autostopDisabled
+        {
+            get { return MemoryEditor.ReadInt(AUTOSTOP) == 1; }
         }
     }
 

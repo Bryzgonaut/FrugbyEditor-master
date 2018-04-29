@@ -167,5 +167,32 @@ namespace FrugbyEditor
 
             return v;
         }
+
+        /// <summary>
+        /// Writes bytes to memory
+        /// </summary>
+        /// <param name="bytes">bytes to write</param>
+        /// <param name="address">The address to write the bytes to</param>
+        /// <returns>number of bytes written </returns>
+        public static int WriteBytes(byte[] bytes, int address)
+        {
+            int bytesWritten = 0;
+            WriteProcessMemory((int)frugbyProcessHandle, address + baseAddress, bytes, bytes.Length, ref bytesWritten);
+            return bytesWritten;
+        }
+
+        /// <summary>
+        /// Read bytes from memory
+        /// </summary>
+        /// <param name="address">The address to read the bytes from</param>
+        /// <param name="numBytes">The number of bytes to read</param>
+        /// <returns>bytes read from memory</returns>
+        public static byte[] ReadBytes(int address, int numBytes)
+        {
+            int bytesRead = 0;
+            byte[] buffer = new byte[numBytes];
+            ReadProcessMemory((int)frugbyProcessHandle, address + baseAddress, buffer, buffer.Length, ref bytesRead);
+            return buffer;
+        }
     }
 }
