@@ -218,7 +218,8 @@
         /// </summary>
         public bool autostopDisabled
         {
-            get { return MemoryEditor.ReadInt(AUTOSTOP) == 1; }
+            get { return MemoryEditor.ReadBytes(AUTOSTOP, 1) != System.BitConverter.GetBytes(68); }
+            set { MemoryEditor.WriteBytes(System.BitConverter.GetBytes(72),AUTOSTOP) ; }
         }
     }
 
