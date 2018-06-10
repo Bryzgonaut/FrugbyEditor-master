@@ -6,17 +6,17 @@
         const int PLAYER_STRUCT_SIZE = 0xC4;
 
         const int IN_SERVER_OFFSET = 0x0;
-        const int ID_OFFSET = 0x4;
+        const int ID_OFFSET = 0x38;
         const int TEAM_OFFSET = 0x8;
         const int ROLE_OFFSET = 0xC;
         const int LOCKOUT_TIME_OFFSET = 0x10;
         const int PLAYER_NAME_OFFSET = 0x3C;
         const int PLAYER_NUMBER_OFFSET = 0x7C;
-        const int TURNING_OFFSET = 0x58;
-        const int FORWARD_BACK_OFFSET = 0x60;
-        const int STICK_X_ROTATION_OFFSET = 0x64;
+        const int STRAFING_OFFSET = 0x84;
+        const int FORWARD_BACK_OFFSET = 0x80;
+        const int TURNING_OFFSET = 0x90;
         const int STICK_Y_ROTATION_OFFSET = 0x68;
-        const int INPUT_STATE_OFFSET = 0x74;
+        const int INPUT_STATE_OFFSET = 0xC0;
         const int HEAD_X_ROTATION_OFFSET = 0x78;
         const int HEAD_Y_ROTATION_OFFSET = 0x7C;
         const int GOALS_OFFSET = 0x88;
@@ -25,12 +25,15 @@
         const int PLAYER_TRANSFORM_LIST_ADDRESS = 0x23B798;
         const int PLAYER_TRANSFORM_SIZE = 0x2934;
 
-        const int PLAYER_POSITION_OFFSET = 0x10;
-        const int PLAYER_SIN_ROTATION_OFFSET = 0x28;
-        const int PLAYER_COS_ROTATION_OFFSET = 0x30;
+        const int PLAYER_POSITION_OFFSET = 0x0;
+        const int PLAYER_SIN_ROTATION_OFFSET = 0x24;
+        const int PLAYER_COS_ROTATION_OFFSET = 0x2C;
         const int STICK_POSITION_OFFSET = 0xA0; //deprecated. will be replaced with hand position
 
-        const int AUTOSTOP = 0x268DA;
+        const int AUTOSTOP_FORWARD_BACK = 0x268D8;
+        const int AUTOSTOP_TURNING = 0x268E9;
+
+        private byte[] disableAutostop = new byte[6] { 0xDD, 0xD8, 0x90, 0x90, 0x90, 0x90 };
 
         private int m_Slot;
 
@@ -94,7 +97,7 @@
         }
 
         /// <summary>
-        /// The angle of the player's stick. Ranges from -1 to 1 in increments of 0.25
+        /// The player's jersey number
         /// </summary>
         public int JerseyNumber
         {
@@ -103,12 +106,12 @@
         }
 
         /// <summary>
-        /// The direction the player is turning. -1 = Left, 1 = Right, 0 = not turning
+        /// The direction the player is sidestepping. -1 = Left, 1 = Right, 0 = not turning
         /// </summary>
-        public float Turning
+        public float Strafing
         {
-            get { return MemoryEditor.ReadFloat(PLAYER_LIST_ADDRESS + m_Slot * PLAYER_STRUCT_SIZE + TURNING_OFFSET); }
-            set { MemoryEditor.WriteFloat(value, PLAYER_LIST_ADDRESS + m_Slot * PLAYER_STRUCT_SIZE + TURNING_OFFSET); }
+            get { return MemoryEditor.ReadFloat(PLAYER_LIST_ADDRESS + m_Slot * PLAYER_STRUCT_SIZE + STRAFING_OFFSET); }
+            set { MemoryEditor.WriteFloat(value, PLAYER_LIST_ADDRESS + m_Slot * PLAYER_STRUCT_SIZE + STRAFING_OFFSET); }
         }
 
         /// <summary>
@@ -123,10 +126,10 @@
         /// <summary>
         /// The rotation of the stick around the player (in radians). Ranges from -Pi / 2 to Pi / 2
         /// </summary>
-        public float StickXRotation
+        public float Turning
         {
-            get { return MemoryEditor.ReadFloat(PLAYER_LIST_ADDRESS + m_Slot * PLAYER_STRUCT_SIZE + STICK_X_ROTATION_OFFSET); }
-            set { MemoryEditor.WriteFloat(value, PLAYER_LIST_ADDRESS + m_Slot * PLAYER_STRUCT_SIZE + STICK_X_ROTATION_OFFSET); }
+            get { return MemoryEditor.ReadFloat(PLAYER_LIST_ADDRESS + m_Slot * PLAYER_STRUCT_SIZE + TURNING_OFFSET); }
+            set { MemoryEditor.WriteFloat(value, PLAYER_LIST_ADDRESS + m_Slot * PLAYER_STRUCT_SIZE + TURNING_OFFSET); }
         }
 
         /// <summary>
@@ -216,10 +219,19 @@
         /// <summary>
         /// Disable writing 0 to inputs when no key is pressed (required for bots)
         /// </summary>
-        public bool autostopDisabled
+        public bool autostopFBDisabled
         {
-            get { return MemoryEditor.ReadBytes(AUTOSTOP, 1) != System.BitConverter.GetBytes(68); }
-            set { MemoryEditor.WriteBytes(System.BitConverter.GetBytes(72),AUTOSTOP) ; }
+            get { return MemoryEditor.ReadBytes(AUTOSTOP_FORWARD_BACK, 1) != System.BitConverter.GetBytes(68); }
+            set { MemoryEditor.WriteBytes(disableAutostop,AUTOSTOP_FORWARD_BACK) ; }
+        }
+
+        /// <summary>
+        /// Disable writing 00 to inputs when no key is pressed (required for bots)
+        /// </summary>
+        public bool autostopLRDisabled
+        {
+            get { return MemoryEditor.ReadBytes(AUTOSTOP_TURNING, 1) != System.BitConverter.GetBytes(68); }
+            set { MemoryEditor.WriteBytes(disableAutostop,AUTOSTOP_TURNING) ; }
         }
     }
 
